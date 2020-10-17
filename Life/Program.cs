@@ -270,7 +270,7 @@ namespace Life
 
             using (StreamReader reader = new StreamReader(inputFile))
             {
-                string line = reader.ReadLine();
+                string line = reader.ReadLine(); //This is reading the first line so you want to make it so that it knows which one is version 1.0 etc. x is dead o is alive in version 2.0 while version 1.0 doesn't need that
                 while (!reader.EndOfStream)
                 {
                     line = reader.ReadLine();
