@@ -7,3 +7,12 @@
 /Users/emiliepomeroy/Documents/CAB201Part2/Display/obj/Debug/netcoreapp3.1/Display.AssemblyInfo.cs
 /Users/emiliepomeroy/Documents/CAB201Part2/Display/obj/Debug/netcoreapp3.1/display.dll
 /Users/emiliepomeroy/Documents/CAB201Part2/Display/obj/Debug/netcoreapp3.1/display.pdb
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\bin\Debug\netcoreapp3.1\display.deps.json
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\bin\Debug\netcoreapp3.1\display.dll
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\bin\Debug\netcoreapp3.1\display.pdb
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\Display.csprojAssemblyReference.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\Display.AssemblyInfoInputs.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\Display.AssemblyInfo.cs
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\Display.csproj.CoreCompileInputs.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\display.dll
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Display\obj\Debug\netcoreapp3.1\display.pdb
