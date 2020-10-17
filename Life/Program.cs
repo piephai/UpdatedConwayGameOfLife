@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Display;
+using System.Linq;
 
 namespace Life
 {
@@ -270,17 +271,50 @@ namespace Life
 
             using (StreamReader reader = new StreamReader(inputFile))
             {
-                string line = reader.ReadLine(); //This is reading the first line so you want to make it so that it knows which one is version 1.0 etc. x is dead o is alive in version 2.0 while version 1.0 doesn't need that
-                while (!reader.EndOfStream)
+                string line = reader.ReadLine();
+                //This is reading the first line so you want to make it so that it knows which one is version 1.0 etc.
+                // x is dead o is alive in version 2.0 while version 1.0 doesn't need that
+
+                //string firstLine = File.ReadLines(inputFile).First();
+
+                if (line == "#version=1.0")
                 {
-                    line = reader.ReadLine();
+                    while (!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine();
 
-                    string[] elements = line.Split(" ");
+                        string[] elements = line.Split(" ");
 
-                    int row = int.Parse(elements[0]);
-                    int column = int.Parse(elements[1]);
+                        int row = int.Parse(elements[0]);
+                        int column = int.Parse(elements[1]);
 
-                    universe[row, column] = 1;
+                        universe[row, column] = 1;
+                    }
+                    return universe;
+                }
+
+                else if (line == "#version=2.0")
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine();
+
+                        string[] elements = line.Split(" ");
+
+                        if(line.Contains("(o)"))
+                        {
+                            int row = int.Parse(elements[0]);
+                            int column = int.Parse(elements[1]);
+                            universe[row, column] = 1;
+                        }
+                        else if (line.Contains("(x)"))
+                        {
+                            int row = int.Parse(elements[0]);
+                            int column = int.Parse(elements[1]);
+                            universe[row, column] = 0;
+                        }
+                        return universe;
+                    }
                 }
             }
 
