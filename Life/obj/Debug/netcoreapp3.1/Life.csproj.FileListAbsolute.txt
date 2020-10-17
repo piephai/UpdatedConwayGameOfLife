@@ -1,0 +1,4 @@
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.csprojAssemblyReference.cache
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.csproj.CoreCompileInputs.cache
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfoInputs.cache
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfo.cs
