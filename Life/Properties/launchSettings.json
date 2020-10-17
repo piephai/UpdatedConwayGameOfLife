@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Life": {
+      "commandName": "Project",
+      "commandLineArgs": "dotnet Life.dll --generations 10 --survival 2 5...8 --birth 2...5 7"
+    }
+  }
+}
