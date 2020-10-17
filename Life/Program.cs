@@ -146,58 +146,58 @@ namespace Life
 
             //Von Neumann not accounting for the furthest corners, non-periodic
             //Incomplete
-            else if (!periodic && neighbourHoodConditions == "vonNeumann")
-            {
-                for (int r = i - order; r <= i + order; r++)
-                {
-                    for (int c = j - order; c <= j + order; c++)
-                    {
-                        if (!centreCount)
-                        {
-                            if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
-                            {
+            //else if (!periodic && neighbourHoodConditions == "vonNeumann")
+            //{
+            //    for (int r = i - order; r <= i + order; r++)
+            //    {
+            //        for (int c = j - order; c <= j + order; c++)
+            //        {
+            //            if (!centreCount)
+            //            {
+            //                if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
+            //                {
                               
                                 
-                                if (r % 1 == -1 || r % 1 == 1 && c % 1 != -1 || c % 1 != 1)
-                                {
-                                    neighbours += universe[r, c];
-                                }
-                                if (r % 0 == 0)
-                            }
-                        }
-                        else
-                        {
-                            if (r >= 0 && r < rows && c >= 0 && c < columns)
-                            {
-                                neighbours += universe[r, c];
-                            }
-                        }
-                    }
-                }
-            }
+            //                    if (r % 1 == -1 || r % 1 == 1 && c % 1 != -1 || c % 1 != 1)
+            //                    {
+            //                        neighbours += universe[r, c];
+            //                    }
+            //                    if (r % 0 == 0)
+            //                }
+            //            }
+            //            else
+            //            {
+            //                if (r >= 0 && r < rows && c >= 0 && c < columns)
+            //                {
+            //                    neighbours += universe[r, c];
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             //Von Neumann periodic
             //Incomplete
-            else
-            {
-                for (int r = i - order; r <= i + order; r++)
-                {
-                    for (int c = j - order; c <= j + order; c++)
-                    {
-                        if (!centreCount)
-                        {
-                            if (r != i || c != j)
-                            {
-                                neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
-                            }
-                        }
-                        else
-                        {
-                            neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
-                        }
-                    }
-                }
-            }
+            //else
+            //{
+            //    for (int r = i - order; r <= i + order; r++)
+            //    {
+            //        for (int c = j - order; c <= j + order; c++)
+            //        {
+            //            if (!centreCount)
+            //            {
+            //                if (r != i || c != j)
+            //                {
+            //                    neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
+            //                }
+            //            }
+            //            else
+            //            {
+            //                neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
+            //            }
+            //        }
+            //    }
+            //}
             
 
             return neighbours;
