@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace Display
 {
@@ -154,6 +155,47 @@ namespace Display
 
             cells[row][col].SetState(state);
             cells[row][col].Draw(ref buffer, CellRowOffset(row), CellColOffset(col), CellWidth, CellHeight);
+        }
+
+        public List<Cell> GetAdjacentCells(int row, int col, int periodic, int order, string neighbourHoodConditions, bool centreCount)
+        {
+            List<Cell> adjacent = new List<Cell>();
+
+            // If 1 then periodic conditions apply & Moore Neighbourhood
+            if (periodic == 1 && neighbourHoodConditions == "Moore")
+            {
+                for (int i = row - order; i <= row + order; i++)
+                {
+                    for (int j = col - order; j <= col + order; j++) 
+                    {
+                        if (i == row && j == col)
+                        {
+                            continue;  // Skip the cell itself
+                        }
+                        adjacent.Add(cells[(i + rows) % rows][(j + cols) % cols]);
+                    }
+                }
+            }
+            // For non periodic conditions & Moore Neighbourhood
+            else if (periodic != 1 && neighbourHoodConditions == "Moore")
+            {
+                for (int i = row - order; i <= row + order; i++)
+                    for (int j = col - order; j <= col + order; j++)
+                        if (i >= 0 && j >= 0 && i < rows && j < cols && !(i == row && j == col))
+                        {
+                            adjacent.Add(cells[i][j]);
+                        }
+            }
+            else if (periodic != 1 && neighbourHoodConditions == "VonNeumann")
+            {
+                for (int i = row - order; i <= row + order; i++)
+                    for (int j = col - order; j <= col + order; j++)
+                        if (i >= 0 && j >= 0 && i < rows && j < cols && !(i == row && j == col))
+                        {
+                            adjacent.Add(cells[i][j]);
+                        }
+            }
+            return adjacent;
         }
 
         /// <summary>
