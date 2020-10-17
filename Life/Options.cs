@@ -16,17 +16,23 @@ namespace Life
         private const double MAX_RANDOM = 1.0;
         private const int MIN_ORDER = 1;
         private const int MAX_ORDER = 10;
-
+        private const int MAX_MEMORY = 512;
+        private const int MIN_MEMORY = 4;
+        
         private int rows = 16;
         private int columns = 16;
         private int generations = 50;
         private double updateRate = 5.0;
         private double randomFactor = 0.5;
+        private string outputFile = null;
         private string inputFile = null;
-        // MY CHANGES
         private int neighbourOrder = 1;
-        private string neighbourhoodType;
-        
+        private string neighbourhoodType = "moore";
+        private bool centreCount = false;
+        private int memory = 16;
+        private bool ghostMode = false;
+        private List <int> survivalRate = new List<int> {2, 3 };
+        private List<int> birthRate = new List<int> { 3 };
 
         public int Rows 
         {
@@ -115,8 +121,6 @@ namespace Life
             }
         }
 
-        // my changes
-
         public int NeighbourOrder
         {
             get => neighbourOrder;
@@ -164,15 +168,16 @@ namespace Life
             get => neighbourhoodType;
             set
             {
-                if (value == "moore")
+                string mooreString = "moore";
+                string vonString = "vonNeumann";
+
+                if (String.Equals(value, mooreString, StringComparison.CurrentCultureIgnoreCase))
                 {
                     neighbourhoodType = value;
-                    //implement more
                 }
-                else if (value == "vonNeumann")
+                else if (String.Equals(value, vonString, StringComparison.CurrentCultureIgnoreCase))
                 {
                     neighbourhoodType = value;
-                    //implement more
                 }
                 else
                 {
@@ -182,7 +187,76 @@ namespace Life
             }
         }
 
+        public bool CentreCount
+        {
+            get => centreCount;
+            set
+            {
+                centreCount = value;
+            }
+        }
+        
+        public List <int> SurvivalRate
+        {
+            get => survivalRate;
+            set
+            {
+                survivalRate.Clear();
+                survivalRate = value;
+            }
+        }
 
+        public List<int> BirthRate
+        {
+            get => survivalRate;
+            set
+            {
+                birthRate.Clear();
+                survivalRate = value;
+            }
+        }
+
+        public int GenerationalMemory
+        {
+            get => memory;
+            set
+            {
+                if (value > MIN_MEMORY && value <= MAX_MEMORY)
+                {
+                    memory = value;
+                }
+                else
+                {
+                    throw new ArgumentException($"Generation memory must be an integer between 4 and 512 (inclusive)");
+                }
+            }
+        }
+
+        public string OutputFile // change?
+        {
+            get => outputFile;
+            set
+            {
+                if (!File.Exists(value))
+                {
+                    throw new ArgumentException($"File \'{value}\' does not exist.");
+                }
+                if (!Path.GetExtension(value).Equals(".seed"))
+                {
+                    throw new ArgumentException($"Incompatible file extension \'{Path.GetExtension(value)}\'");
+                }
+                outputFile = value;
+            }
+        }
+
+        public bool GhostMode
+        {
+            get => ghostMode;
+            set
+            {
+                ghostMode = value;
+            }
+        }
 
 
         public bool Periodic { get; set; } = false;
@@ -195,13 +269,20 @@ namespace Life
 
             string output = "\n";
             output += "Input File: ".PadLeft(padding) + (InputFile != null ? InputFile : "N/A") + "\n";
+            output += "Output File: ".PadLeft(padding) + (OutputFile != null ? OutputFile : "N/A") + "\n";
             output += "Generations: ".PadLeft(padding) + $"{Generations}\n";
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
+            output += "Memory: ".PadLeft(padding) + $"{memory}\n";
+
+            //output += "Rules: ".PadLeft(padding) + $"S(" + \n";
+
+            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + "(" + neighbourOrder + ")" + "\n";
             output += "Periodic: ".PadLeft(padding) + (Periodic ? "Yes" : "No") + "\n";
             output += "Rows: ".PadLeft(padding) + Rows + "\n";
             output += "Columns: ".PadLeft(padding) + Columns + "\n";
             output += "Random Factor: ".PadLeft(padding) + $"{100 * RandomFactor:F2}%\n";
             output += "Step Mode: ".PadLeft(padding) + (StepMode ? "Yes" : "No") + "\n";
+            output += "Ghost Mode: ".PadLeft(padding) + (GhostMode ? "Yes" : "No") + "\n";
             return output;
         }
     }

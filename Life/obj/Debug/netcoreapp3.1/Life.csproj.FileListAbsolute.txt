@@ -2,3 +2,14 @@
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.csproj.CoreCompileInputs.cache
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfoInputs.cache
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfo.cs
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/Life.deps.json
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/Life.runtimeconfig.json
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/Life.runtimeconfig.dev.json
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/Life.dll
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/Life.pdb
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/display.dll
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/bin/Debug/netcoreapp3.1/display.pdb
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.csproj.CopyComplete
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.dll
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.pdb
+/Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.genruntimeconfig.cache

@@ -28,7 +28,7 @@ namespace Life
                         case "--random":
                             ProcessRandomFactor(args, i, options);
                             break;
-                        case "--seed":
+                        case "--input":
                             ProcessInputFile(args, i, options);
                             break;
                         case "--periodic":
@@ -37,9 +37,24 @@ namespace Life
                         case "--step":
                             options.StepMode = true;
                             break;
-
-                        case "neighbour":
-
+                        case "--neighbour":
+                            ProcessNeighbour(args, i, options);
+                            break;
+                        case "--survival":
+                            ProcessSurvival(args, i, options);
+                            break;
+                        case "--birth":
+                            ProcessBirth(args, i, options);
+                            break;
+                        case "--memory":
+                            ProcessGenerationalMemory(args, i, options);
+                            break;
+                        case "--output":
+                            ProcessOutputFile(args, i, options);
+                            break;
+                        case "--ghost":
+                            ProcessGhostMode(args, i, options);
+                            break;
 
                     }
                 }
@@ -115,37 +130,149 @@ namespace Life
 
         private static void ProcessInputFile(string[] args, int i, Options options)
         {
-            ValidateParameterCount(args, i, "seed", 1);
+            ValidateParameterCount(args, i, "input", 1);
 
             options.InputFile = args[i + 1];
         }
 
-        // MY CHANGES
-
         private static void ProcessNeighbour(string[] args, int i, Options options)
         {
             ValidateParameterCount(args, i, "neighbour", 3);
-
-            if(!int.TryParse(args[i + 2], out int neighbourOrder))
-            {
-                throw new ArgumentException($"Neighbour order \'{args[i + 2]}\' is not a valid integer.");
-            }
-            options.NeighbourOrder = neighbourOrder;
 
             if (String.IsNullOrEmpty(args[i + 1]))
             {
                 throw new ArgumentException($"The input: \'{args[i + 1]}\' is not a valid parameter. " +
                     $"The neighbourhood type must either be moore or vonNeumann.");
             }
-            options.NeighbourhoodType = args[i + 3];
+            options.NeighbourhoodType = args[i + 1];
+
+            if (!int.TryParse(args[i + 2], out int neighbourOrder))
+            {
+                throw new ArgumentException($"Neighbour order \'{args[i + 2]}\' is not a valid integer.");
+            }
+            options.NeighbourOrder = neighbourOrder;
 
             if (String.IsNullOrEmpty(args[i + 3]))
             {
-                throw new ArgumentException($"The input: \'{args[i + 1]}\' is not a valid parameter. " +
-                    $"The neighbour centre must either be moore or vonNeumann.");
+                throw new ArgumentException($"Neighbourhood must specify whether the centre is counted" +
+                    $" by including 'true' or 'false' parameter");
             }
-            options.CentreCount = args[i + 3];
 
+            if (!String.IsNullOrEmpty(args[i + 3]))
+            {
+                string trueString = "true";
+                string falseString = "false";
+                string parameterToCompare = args[i + 3];
+
+                if (String.Equals(parameterToCompare, trueString, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    options.CentreCount = true;
+                }
+                else if (String.Equals(parameterToCompare, falseString, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    options.CentreCount = false;
+                }
+                else
+                {
+                    throw new ArgumentException($"The neighbourhood parameter for <centre-count> must be 'true' or 'false'");
+                }
+            }
+        }
+
+        private static void ProcessSurvival(string[] args, int i, Options options)
+        {
+            ValidateParameterCount(args, i, "survival", 1);
+
+            List <int> survivalInput = new List<int>();
+            List<int> survivalRate = new List<int>();
+            int indexOfElipse = 0;
+            bool containElipse = false;
+
+            for (int param = 0; param < args.Length; param++)
+            {
+                if (args[i + param] != "...")
+                {
+                    if (!int.TryParse(args[i + param], out int survivalNum))
+                    {
+                        throw new ArgumentException($"The supplied survival parameter is not a valid integer.");
+                    }
+                    survivalInput.Add(survivalNum);
+                }
+                else
+                {
+                    indexOfElipse = param;
+                    containElipse = true;
+                }
+            }
+            if (containElipse)
+            {
+                survivalRate = ElipseLoop(survivalInput, indexOfElipse);
+            }
+            else
+            {
+                survivalRate = survivalInput;
+            }
+            options.SurvivalRate = survivalRate;
+        }
+
+        private static void ProcessBirth(string[] args, int i, Options options)
+        {
+            ValidateParameterCount(args, i, "birth", 1);
+
+            List<int> birthInput = new List<int>();
+            List<int> birthRate = new List<int>();
+            int indexOfElipse = 0;
+            bool containElipse = false;
+
+            for (int param = 0; param < args.Length; param++)
+            {
+                if (args[i + param] != "...")
+                {
+                    if (!int.TryParse(args[i + param], out int birthNum))
+                    {
+                        throw new ArgumentException($"The supplied birth parameter is not a valid integer.");
+                    }
+                    birthInput.Add(birthNum);
+                }
+                else
+                {
+                    indexOfElipse = param;
+                    containElipse = true;
+                }
+            }
+            if (containElipse)
+            {
+                birthRate = ElipseLoop(birthInput, indexOfElipse);
+            }
+            else
+            {
+                birthRate = birthInput;
+            }
+            options.SurvivalRate = birthRate;
+        }
+
+
+        private static void ProcessGenerationalMemory(string[] args, int i, Options options)
+        {
+            ValidateParameterCount(args, i, "memory", 1);
+            if (!int.TryParse(args[i + 1], out int memory))
+            {
+                throw new ArgumentException($"Generational memory input: \'{args[i + 1]}\' is not a valid integer.");
+            }
+            options.GenerationalMemory = memory;
+        }
+
+        private static void ProcessGhostMode(string[] args, int i, Options options)
+        {
+            ValidateParameterCount(args, i, "ghost", 0);
+            options.GhostMode = true;
+        }
+
+        private static void ProcessOutputFile(string[] args, int i, Options options)
+        {
+            ValidateParameterCount(args, i, "output", 1);
+
+            options.OutputFile = args[i + 1];
         }
 
         private static void ValidateParameterCount(string[] args, int i, string option, int numParameters)
@@ -156,5 +283,28 @@ namespace Life
                     $"(provided {args.Length - i - 1}, expected {numParameters})");
             }
         }
+
+        private static List<int> ElipseLoop(List<int> initialList, int indexOfElipse)
+        {
+            List<int> outputList = new List<int>();
+            int startElement = initialList[indexOfElipse - 1];
+            int endElement = initialList[indexOfElipse];
+
+            foreach (int element in initialList)
+            {
+                if (element != startElement || element != endElement)
+                {
+                    outputList.Add(element);
+                }
+            }
+            for (int currentElement = startElement; currentElement <= endElement; currentElement++)
+            {
+                outputList.Add(currentElement);
+            }
+            return outputList;
+             
+
+        }
+
     }
 }
