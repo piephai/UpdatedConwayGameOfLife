@@ -127,7 +127,7 @@ namespace Life
             set
             {
                 // Checking neighbourhood order is between 1 and 10 (inclusive)    
-                if (value > MIN_ORDER && value <= MAX_ORDER)
+                if (value >= MIN_ORDER && value <= MAX_ORDER)
                 {
                     int lessThanSmallestDimension = value / 2;
 
@@ -157,7 +157,7 @@ namespace Life
                 }
                 else
                 {
-                    throw new ArgumentException($"Neighbour order \'{value:F2}\' is outside of the acceptable" +
+                    throw new ArgumentException($"Neighbour order \'{value:F2}\' is outside of the acceptable " +
                         $"range of values ({MIN_ORDER} - {MAX_ORDER})");
                 }
             }
