@@ -2,3 +2,7 @@
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.csproj.CoreCompileInputs.cache
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfoInputs.cache
 /Users/emiliepomeroy/Documents/CAB201Part2/Life/obj/Debug/netcoreapp3.1/Life.AssemblyInfo.cs
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.csprojAssemblyReference.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.AssemblyInfoInputs.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.AssemblyInfo.cs
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.csproj.CoreCompileInputs.cache
