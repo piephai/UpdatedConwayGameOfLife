@@ -27,7 +27,7 @@ namespace Life
 
                 if (iteration != 0)
                 {
-                    universe = EvolveUniverse(universe, options.Periodic);
+                    universe = EvolveUniverse(universe, options.Periodic, options.NeighbourOrder, options.NeighbourhoodType, options.CentreCount);
                 }
 
                 UpdateGrid(grid, universe);
@@ -55,7 +55,7 @@ namespace Life
             WaitSpacebar();
         }
 
-        private static int[,] EvolveUniverse(int[,] universe, bool periodic)
+        private static int[,] EvolveUniverse(int[,] universe, bool periodic, int order, string neighbourHoodConditions, bool centreCount)
         {
             const int ALIVE = 1;
             const int DEAD = 0;
@@ -69,10 +69,11 @@ namespace Life
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    int neighbours = CountNeighbours(universe, i, j, periodic);
+                    int neighbours = CountNeighbours(universe, i, j, periodic, order, neighbourHoodConditions, centreCount);
 
                     if (universe[i, j] == ALIVE && (neighbours == 2 || neighbours == 3))
                     {
+                        
                         buffer[i, j] = ALIVE;
                     }
                     else if (universe[i, j] == DEAD && neighbours == 3)
@@ -89,33 +90,107 @@ namespace Life
             return buffer.Clone() as int[,];
         }
 
-        private static int CountNeighbours(int[,] universe, int i, int j, bool periodic)
+        private static int CountNeighbours(int[,] universe, int i, int j, bool periodic, int order, string neighbourHoodConditions, bool centreCount)
         {
             int rows = universe.GetLength(0);
             int columns = universe.GetLength(1);
 
             int neighbours = 0;
-
-            if (!periodic)
+            
+            //Non-periodic moore neighbourhood
+            if (!periodic && neighbourHoodConditions == "moore")
             {
-                for (int r = i - 1; r <= i + 1; r++)
+                for (int r = i - order; r <= i + order; r++)
                 {
-                    for (int c = j - 1; c <= j + 1; c++)
+                    for (int c = j - order; c <= j + order; c++)
                     {
-                        if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
+                        if (!centreCount)
                         {
-                            neighbours += universe[r, c];
+                            if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
+                            {
+                                neighbours += universe[r, c];
+                            }
+                        }
+                        else
+                        {
+                            if (r >= 0 && r < rows && c >= 0 && c < columns)
+                            {
+                                neighbours += universe[r, c];
+                            }
                         }
                     }
                 }
             }
+            //Periodic moore neighbourhood
+            else if (periodic && neighbourHoodConditions == "moore")
+            {
+                for (int r = i - order; r <= i + order; r++)
+                {
+                    for (int c = j - order; c <= j + order; c++)
+                    {
+                        if (!centreCount)
+                        {
+                            if (r != i || c != j)
+                            {
+                                neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
+                            }
+                        }
+                        else
+                        {
+                            neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
+                        }
+                    }
+                }
+            }
+
+            //Von Neumann not accounting for the furthest corners, non-periodic
+            //Incomplete
+            else if (!periodic && neighbourHoodConditions == "vonNeumann")
+            {
+                for (int r = i - order; r <= i + order; r++)
+                {
+                    for (int c = j - order; c <= j + order; c++)
+                    {
+                        if (!centreCount)
+                        {
+                            if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
+                            {
+                              
+                                
+                                if (r % 1 == -1 || r % 1 == 1 && c % 1 != -1 || c % 1 != 1)
+                                {
+                                    neighbours += universe[r, c];
+                                }
+                                if (r % 0 == 0)
+                            }
+                        }
+                        else
+                        {
+                            if (r >= 0 && r < rows && c >= 0 && c < columns)
+                            {
+                                neighbours += universe[r, c];
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Von Neumann periodic
+            //Incomplete
             else
             {
-                for (int r = i - 1; r <= i + 1; r++)
+                for (int r = i - order; r <= i + order; r++)
                 {
-                    for (int c = j - 1; c <= j + 1; c++)
+                    for (int c = j - order; c <= j + order; c++)
                     {
-                        if (r != i || c != j)
+                        if (!centreCount)
+                        {
+                            if (r != i || c != j)
+                            {
+                                neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
+                            }
+                        }
+                        else
                         {
                             neighbours += universe[Modulus(r, rows), Modulus(c, columns)];
                         }
