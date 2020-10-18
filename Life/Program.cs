@@ -8,6 +8,8 @@ namespace Life
 {
     class Program
     {
+        
+
         static void Main(string[] args)
         {
             Options options = ArgumentProcessor.Process(args);
@@ -60,6 +62,7 @@ namespace Life
         {
             const int ALIVE = 1;
             const int DEAD = 0;
+            Options options = new Options();
 
             int rows = universe.GetLength(0);
             int columns = universe.GetLength(1);
@@ -72,22 +75,20 @@ namespace Life
                 {
                     int neighbours = CountNeighbours(universe, i, j, periodic, order, neighbourHoodConditions, centreCount);
 
-                    if (universe[i, j] == ALIVE && (neighbours == 2 || neighbours == 3))
+                    if (universe[i, j] == ALIVE && options.SurvivalRate.Contains(neighbours))
                     {
-                        
                         buffer[i, j] = ALIVE;
                     }
-                    else if (universe[i, j] == DEAD && neighbours == 3)
+                    else if (universe[i, j] == DEAD && options.BirthRate.Contains(neighbours))
                     {
                         buffer[i, j] = ALIVE;
                     }
                     else
-                    { 
+                    {
                         buffer[i, j] = DEAD;
                     }
                 }
             }
-
             return buffer.Clone() as int[,];
         }
 

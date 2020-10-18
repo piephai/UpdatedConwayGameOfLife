@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Life
+
 {
     static class ArgumentProcessor
     {
-
         public static Options Process(string[] args)
         {
             Options options = new Options();
@@ -282,6 +282,7 @@ namespace Life
                 throw new ArgumentException($"Insufficient parameters for \'--{option}\' option " +
                     $"(provided {args.Length - i - 1}, expected {numParameters})");
             }
+
         }
 
         private static List<int> ElipseLoop(List<int> initialList, int indexOfElipse)
