@@ -54,7 +54,7 @@ namespace Life
                 isSteadyState = CheckSteadyState(universeList, options, universe); //Check if the current universe have reached a steady state
                 if (isSteadyState)
                 { 
-                    break;
+                    break; //If a steady state is found then stop the next generation from happening
                 }
                 universeList.Add(universe);
 
@@ -121,7 +121,7 @@ namespace Life
                             }                      
                         }
                     }
-                    if (steadyStateCounter == options.Rows * options.Columns) //If it a grid from universeList matches perfectly with the current universe then steadyStateCounter will be equal to rows * columns
+                    if (steadyStateCounter == options.Rows * options.Columns) //If a grid from universeList matches perfectly with the current universe then steadyStateCounter will be equal to rows * columns
                     {
                         if (isDeadState == options.Rows * options.Columns)
                         {
@@ -138,11 +138,6 @@ namespace Life
             
         }
 
-        //private static StreamWriter InitialiseOutputFile (Options options)
-        //{
-            
-        //    return writer;
-        //}
 
         private static void OutputToFile (Options options, List<int[,]> universeList, StreamWriter writer)
         {
@@ -152,12 +147,12 @@ namespace Life
                 {
                     //writer.WriteLine(universeList[universeList.Count - 1][row, column]);
 
-                    if (universeList[universeList.Count - 1][row, column] == 1)
+                    if (universeList[universeList.Count - 1][row, column] == 1) //Write the coordinate of the particular [row, column] alive cell to file
                     {
                         writer.WriteLine("(o) cell: " + row + ", " + column);
                     }
 
-                    else if (universeList[universeList.Count - 1][row, column] == 0)
+                    else if (universeList[universeList.Count - 1][row, column] == 0) //Write the coordinate of the particular [row, column] dead cell to file
                     {
                         writer.WriteLine("(x) cell: " + row + ", " + column);
                     }
@@ -399,7 +394,7 @@ namespace Life
             using (StreamReader reader = new StreamReader(inputFile))
             {
                 string line = reader.ReadLine();
-                if (line == "#version=1.0")
+                if (line == "#version=1.0") //Read version 1.0 file
                 {
                     while (!reader.EndOfStream)
                     {
@@ -415,7 +410,7 @@ namespace Life
                    
                 }
 
-                else if (line == "#version=2.0")
+                else if (line == "#version=2.0" //Read version 2.0 file
                 {
                     while (!reader.EndOfStream)
                     {
@@ -494,13 +489,15 @@ namespace Life
             }
             else
             {
+                //Get centre of ellipse
                 int centreX = (colBottomLeft + colTopRight) / 2;
                 int centreY = (rowBottomLeft + rowTopRight) / 2;
+
                 for (int row = rowBottomLeft; row <= rowTopRight; row++)
                 {
                     for (int col = colBottomLeft; col <= colTopRight; col++)
                     {
-                        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) <= 1)
+                        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) <= 1) //Check if [row, column] is inside ellipse. Formula from blackboard
                         {
                             if (isAlive)
                             {
@@ -518,6 +515,6 @@ namespace Life
             }
 
         }
-            //For ellipse cell structure        
+                   
     }
 }
