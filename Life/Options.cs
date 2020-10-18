@@ -306,10 +306,8 @@ namespace Life
             output += "Generations: ".PadLeft(padding) + $"{Generations}\n";
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
-<<<<<<< HEAD
-            //output += "Rules: ".PadLeft(padding) + $"S(" + \n";
             output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + neighbourOrder + ")" + "\n";
-=======
+
             output += "Rules: ".PadLeft(padding) + "S( ";
 
             for (int i = 0; i < survivalString.Count; i++)
@@ -323,7 +321,6 @@ namespace Life
             }
             output += ")\n";
             output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + "(" + neighbourOrder + ")" + "\n";
->>>>>>> f32114a53f42fc788c78cfe67e3bf076270dde2c
             output += "Periodic: ".PadLeft(padding) + (Periodic ? "Yes" : "No") + "\n";
             output += "Rows: ".PadLeft(padding) + Rows + "\n";
             output += "Columns: ".PadLeft(padding) + Columns + "\n";

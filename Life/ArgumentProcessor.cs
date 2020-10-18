@@ -8,11 +8,6 @@ namespace Life
 {
     static class ArgumentProcessor
     {
-<<<<<<< HEAD
-=======
-        
-
->>>>>>> f32114a53f42fc788c78cfe67e3bf076270dde2c
         public static Options Process(string[] args)
         {
             Options options = new Options();
@@ -207,12 +202,26 @@ namespace Life
         private static int CheckNumParam (string []args, int i)
         {
             int numOfParam = 1;
-            int tempCounter = 0;
+            int tempCounter = 1;
 
-            while (!args[i + tempCounter + 1].Contains("--") && i + tempCounter < args.Length  && args[i + tempCounter][0] >= '0' && args[i + tempCounter][0] <= '9')
+            while (true)
             {
-                numOfParam++;
-                tempCounter++;
+                if (i + tempCounter < args.Length)
+                {
+                    if (args[i + tempCounter].Contains("--"))
+                    {
+                        break;
+
+                    }
+                   
+                    numOfParam++;
+                    tempCounter++;
+                }
+                else
+                {
+                    break;
+                }
+                
             }
             return numOfParam;
         }
@@ -247,10 +256,11 @@ namespace Life
                         int intValue = int.Parse(value);
                         tempList.Add(intValue);
                     }
+                    ElipseLoop(tempList, inputList);
                 }
                 stringList.Add(argument); //Add each of --survival parameter as a string to a list
             }
-            ElipseLoop(tempList, inputList); //Add all values between the number on either side of the elipse. Inclusive of the numbers on either side 
+             //Add all values between the number on either side of the elipse. Inclusive of the numbers on either side 
 
             if (optionName == "survival")
             {
