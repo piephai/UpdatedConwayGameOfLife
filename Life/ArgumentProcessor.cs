@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Life
 
 {
     static class ArgumentProcessor
     {
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> f32114a53f42fc788c78cfe67e3bf076270dde2c
         public static Options Process(string[] args)
         {
             Options options = new Options();
+           
             try
             {
                 for (int i = 0; i < args.Length; i++)
@@ -32,10 +39,10 @@ namespace Life
                             ProcessInputFile(args, i, options);
                             break;
                         case "--periodic":
-                            options.Periodic = true;
+                            ProcessPeriodic(args, i, options);
                             break;
                         case "--step":
-                            options.StepMode = true;
+                            ProcessStep(args, i, options);
                             break;
                         case "--neighbour":
                             ProcessNeighbour(args, i, options);
@@ -181,75 +188,84 @@ namespace Life
 
         private static void ProcessSurvival(string[] args, int i, Options options)
         {
-            ValidateParameterCount(args, i, "survival", 1);
+            ValidateParameterCount(args, i, "survival", 1); //Make sure that --survival will have at least one parameter
+            ValueProcessor(args, i, options, "survival");
 
-            List <int> survivalInput = new List<int>();
-            List<int> survivalRate = new List<int>();
-            int indexOfElipse = 0;
-            bool containElipse = false;
-
-            for (int param = 0; param < args.Length; param++)
-            {
-                if (args[i + param] != "...")
-                {
-                    if (!int.TryParse(args[i + param], out int survivalNum))
-                    {
-                        throw new ArgumentException($"The supplied survival parameter is not a valid integer.");
-                    }
-                    survivalInput.Add(survivalNum);
-                }
-                else
-                {
-                    indexOfElipse = param;
-                    containElipse = true;
-                }
-            }
-            if (containElipse)
-            {
-                survivalRate = ElipseLoop(survivalInput, indexOfElipse);
-            }
-            else
-            {
-                survivalRate = survivalInput;
-            }
-            options.SurvivalRate = survivalRate;
         }
-
         private static void ProcessBirth(string[] args, int i, Options options)
         {
-            ValidateParameterCount(args, i, "birth", 1);
 
-            List<int> birthInput = new List<int>();
-            List<int> birthRate = new List<int>();
-            int indexOfElipse = 0;
-            bool containElipse = false;
+            ValidateParameterCount(args, i, "birth", 1); //Make sure that --birth will have at least one parameter
+            ValueProcessor(args, i, options, "birth");
 
-            for (int param = 0; param < args.Length; param++)
+        }
+
+        /*Get the number of parameters after --survival
+        Check to see if after --survival the argument contain -- 
+        After that check to see if the argument is less then the argument length - 1
+        After that check to see if the first character of the argument is a digit [0-9] */
+        private static int CheckNumParam (string []args, int i)
+        {
+            int numOfParam = 1;
+            int tempCounter = 0;
+
+            while (!args[i + tempCounter + 1].Contains("--") && i + tempCounter < args.Length  && args[i + tempCounter][0] >= '0' && args[i + tempCounter][0] <= '9')
             {
-                if (args[i + param] != "...")
+                numOfParam++;
+                tempCounter++;
+            }
+            return numOfParam;
+        }
+
+        private static void ValueProcessor (string[] args, int i, Options options, string optionName)
+        {
+            List<int> inputList = new List<int>();
+            List<string> stringList = new List<string>();
+            List<int> tempList = new List<int>();
+            int numOfParam = CheckNumParam(args, i);
+
+            //Loop through all the parameters of --survival
+            for (int param = 1; param < numOfParam; param++)
+            {
+                var argument = args[i + param];
+                //Check if the current argument contain ... if it does not then check if the value can be passed into an int
+                if (!argument.Contains("..."))
                 {
-                    if (!int.TryParse(args[i + param], out int birthNum))
+                    if (!int.TryParse(args[i + param], out int tempNum))
                     {
-                        throw new ArgumentException($"The supplied birth parameter is not a valid integer.");
+                        throw new ArgumentException($"The supplied " + optionName + " parameter is not a valid integer.");
                     }
-                    birthInput.Add(birthNum);
+                    inputList.Add(tempNum);
+
                 }
                 else
                 {
-                    indexOfElipse = param;
-                    containElipse = true;
+
+                    string[] numbers = Regex.Split(argument, @"\D+"); //Split the string up into individual digits
+                    foreach (string value in numbers)
+                    {//Loop through the numbers array after the regex split to turn each string element into an integer value
+                        int intValue = int.Parse(value);
+                        tempList.Add(intValue);
+                    }
                 }
+                stringList.Add(argument); //Add each of --survival parameter as a string to a list
             }
-            if (containElipse)
+            ElipseLoop(tempList, inputList); //Add all values between the number on either side of the elipse. Inclusive of the numbers on either side 
+
+            if (optionName == "survival")
             {
-                birthRate = ElipseLoop(birthInput, indexOfElipse);
+                options.SurvivalRate = inputList;
+                options.SurvivalString = stringList;
             }
             else
             {
-                birthRate = birthInput;
+                options.BirthRate = inputList;
+                options.BirthrateString = stringList;
             }
-            options.SurvivalRate = birthRate;
+            
         }
+
+ 
 
 
         private static void ProcessGenerationalMemory(string[] args, int i, Options options)
@@ -264,9 +280,44 @@ namespace Life
 
         private static void ProcessGhostMode(string[] args, int i, Options options)
         {
-            ValidateParameterCount(args, i, "ghost", 0);
+
+            if (i < args.Length - 1)
+            {
+                if (int.TryParse(args[i + 1], out int tempNum) || !args[i + 1].Contains("--"))
+                {
+                    throw new ArgumentException($"Ghost mode input: \'{args[i + 1]}\' is not valid as ghost mode has does not have a parameter");
+                }
+            }
+ 
+
             options.GhostMode = true;
         }
+
+        private static void ProcessPeriodic(string[] args, int i, Options options)
+        {
+            if (i < args.Length - 1)
+            {
+                if (int.TryParse(args[i + 1], out int tempNum) || !args[i + 1].Contains("--"))
+                {
+                    throw new ArgumentException($"Periodic mode input: \'{args[i + 1]}\' is not valid as periodic mode has does not have a parameter");
+                }
+            }
+            options.Periodic = true;
+        }
+
+        private static void ProcessStep(string[] args, int i, Options options)
+        {
+            if (i < args.Length - 1)
+            {
+                if (int.TryParse(args[i + 1], out int tempNum) || !args[i + 1].Contains("--"))
+                {
+                    throw new ArgumentException($"Step mode input: \'{args[i + 1]}\' is not valid as step mode has does not have a parameter");
+                }
+            }
+            options.StepMode = true;
+        }
+
+
 
         private static void ProcessOutputFile(string[] args, int i, Options options)
         {
@@ -285,25 +336,15 @@ namespace Life
 
         }
 
-        private static List<int> ElipseLoop(List<int> initialList, int indexOfElipse)
+        private static void ElipseLoop(List<int> initialList, List<int> outputList)
         {
-            List<int> outputList = new List<int>();
-            int startElement = initialList[indexOfElipse - 1];
-            int endElement = initialList[indexOfElipse];
 
-            foreach (int element in initialList)
-            {
-                if (element != startElement || element != endElement)
-                {
-                    outputList.Add(element);
-                }
-            }
+            int startElement = initialList[0];
+            int endElement = initialList[1];
             for (int currentElement = startElement; currentElement <= endElement; currentElement++)
             {
                 outputList.Add(currentElement);
             }
-            return outputList;
-             
 
         }
 

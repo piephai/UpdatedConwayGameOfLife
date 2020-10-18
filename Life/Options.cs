@@ -33,6 +33,12 @@ namespace Life
         private bool ghostMode = false;
         private List <int> survivalRate = new List<int> {2, 3 };
         private List<int> birthRate = new List<int> { 3 };
+        private bool containElipse = false;
+        private List<string> survivalString = new List<string> { "2", "3" };
+        private List<string> birthRateString = new List<string> { "3" };
+        //private int endingSurvivalNum = 3;
+        //private int startingBirthNum = 3;
+        //private int endingBirthNum = 3;
 
         public int Rows 
         {
@@ -87,6 +93,15 @@ namespace Life
                         $"range of values ({MIN_UPDATE} - {MAX_UPDATE})");
                 }
                 updateRate = value;
+            }
+        }
+
+        public bool Elipse
+        {
+            get => containElipse;
+            set
+            {
+                containElipse = value;
             }
         }
 
@@ -215,6 +230,23 @@ namespace Life
                 survivalRate = value;
             }
         }
+        public List <string> SurvivalString
+        {
+            get => survivalString;
+            set
+            {
+                survivalString = value;
+            }
+        }
+
+        public List<string> BirthrateString
+        {
+            get => birthRateString;
+            set
+            {
+                birthRateString = value;
+            }
+        }
 
         public int GenerationalMemory
         {
@@ -257,6 +289,7 @@ namespace Life
                 ghostMode = value;
             }
         }
+        
 
 
         public bool Periodic { get; set; } = false;
@@ -273,14 +306,31 @@ namespace Life
             output += "Generations: ".PadLeft(padding) + $"{Generations}\n";
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
+<<<<<<< HEAD
             //output += "Rules: ".PadLeft(padding) + $"S(" + \n";
             output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + neighbourOrder + ")" + "\n";
+=======
+            output += "Rules: ".PadLeft(padding) + "S( ";
+
+            for (int i = 0; i < survivalString.Count; i++)
+            {
+                output += survivalString[i] + " ";
+            }
+            output += ")" + " B( ";
+            for (int i = 0; i < birthRateString.Count; i++)
+            {
+                output += birthRateString[i] + " ";
+            }
+            output += ")\n";
+            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + "(" + neighbourOrder + ")" + "\n";
+>>>>>>> f32114a53f42fc788c78cfe67e3bf076270dde2c
             output += "Periodic: ".PadLeft(padding) + (Periodic ? "Yes" : "No") + "\n";
             output += "Rows: ".PadLeft(padding) + Rows + "\n";
             output += "Columns: ".PadLeft(padding) + Columns + "\n";
             output += "Random Factor: ".PadLeft(padding) + $"{100 * RandomFactor:F2}%\n";
             output += "Step Mode: ".PadLeft(padding) + (StepMode ? "Yes" : "No") + "\n";
             output += "Ghost Mode: ".PadLeft(padding) + (GhostMode ? "Yes" : "No") + "\n";
+            
             return output;
         }
     }
