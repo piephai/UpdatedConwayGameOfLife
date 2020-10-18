@@ -307,9 +307,7 @@ namespace Life
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
             output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + neighbourOrder + ")" + "\n";
-
             output += "Rules: ".PadLeft(padding) + "S( ";
-
             for (int i = 0; i < survivalString.Count; i++)
             {
                 output += survivalString[i] + " ";
