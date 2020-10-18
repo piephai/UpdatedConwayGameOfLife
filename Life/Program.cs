@@ -16,6 +16,10 @@ namespace Life
             Options options = ArgumentProcessor.Process(args);
             int[,] universe = InitializeUniverse(options);
             Grid grid = new Grid(options.Rows, options.Columns);
+            ////int[,,] storedMemory = new int[options.GenerationalMemory, options.Rows, options.Columns] ;
+            var universeList = new List<int[,]>();
+            bool isSteadyState = false;
+            
 
             Logging.Message("Press spacebar to begin the game...");
             WaitSpacebar();
@@ -27,17 +31,30 @@ namespace Life
             int iteration = 0;
             while (iteration <= options.Generations)
             {
+                
                 stopwatch.Restart();
 
                 if (iteration != 0)
                 {
                     universe = EvolveUniverse(universe, options.Periodic, options.NeighbourOrder, options.NeighbourhoodType, options.CentreCount, options.BirthRate, options.SurvivalRate);
                 }
+                
+                if (universeList.Count == options.GenerationalMemory)
+                {
+                    universeList.RemoveAt(0);
+
+                }
 
                 UpdateGrid(grid, universe);
 
                 grid.SetFootnote($"Generation: {iteration++}");
                 grid.Render();
+                isSteadyState = CheckSteadyState(universeList, options, universe);
+                if (isSteadyState)
+                { 
+                    break;
+                }
+                universeList.Add(universe);
 
                 if (options.StepMode)
                 {
@@ -55,10 +72,39 @@ namespace Life
 
             grid.RevertWindow();
 
+            if (isSteadyState)
+            {
+                Logging.Message($"Steady-state detected... periodicity = {iteration - 1}");
+            }
             Logging.Message("Press spacebar to exit program...");
             WaitSpacebar();
         }
+        private static bool CheckSteadyState (List<int[,]> universeList, Options options, int[,] universe)
+        {
+            if (universeList.Count > 0) //Only check if universeList already have at least an element in it
+            {
+                for (int i = 0; i < universeList.Count; i++)
+                {
+                    int steadyStateCounter = 0;
+                    for (int row = 0; row < options.Rows; row++)
+                    {
+                        for (int column = 0; column < options.Columns; column++)
+                        {
+                            if (universeList[i][row, column] == universe[row, column]) //Check if a grid from universe list matches that of the current universe
+                            {
+                                steadyStateCounter++;
+                            }                      
+                        }
+                    }
+                    if (steadyStateCounter == options.Rows * options.Columns) //If it a grid from universeList matches perfectly with the current universe then steadyStateCounter will be equal to rows * columns
+                    {
+                        return true;
+                    }
+                }
+            }
 
+            return false;
+        }
         private static int[,] EvolveUniverse(int[,] universe, bool periodic, int order, string neighbourHoodConditions, bool centreCount, List<int> birthRate, List<int> survivalRate)
         {
             const int ALIVE = 1;
@@ -239,10 +285,15 @@ namespace Life
             while (Console.ReadKey(true).Key != ConsoleKey.Spacebar) ;
         }
 
-        private static void StoreToMemory (int generatiosToSave, int [,] universe)
-        {
+        //private static int [,,] InitialiseMemory ( Options options)
+        //{
+        //    //if (options.GenerationalMemory > 4)
+        //    //int[,,] memory = new int[options.GenerationalMemory, options.Rows, options.Columns];
 
-        }
+        //    //return memory;
+
+
+        //}
 
         private static int[,] InitializeUniverse(Options options)
         {

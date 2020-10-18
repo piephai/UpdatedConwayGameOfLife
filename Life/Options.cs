@@ -158,7 +158,7 @@ namespace Life
                             throw new ArgumentException($"Neighbour order must be less than half of the rows dimension ({rows})");
                         }
                     }
-                    else
+                    else if (columns < rows)
                     {
                         if (lessThanSmallestDimension < columns)
                         {
@@ -167,6 +167,17 @@ namespace Life
                         else
                         {
                             throw new ArgumentException($"Neighbour order must be less than half of the columns dimension ({columns})");
+                        }
+                    }
+                    else
+                    {
+                        if(lessThanSmallestDimension < rows && lessThanSmallestDimension < columns)
+                        {
+                            neighbourOrder = value;
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"Neighbour order must be less than half of the smallest dimension");
                         }
                     }
                 }
@@ -209,7 +220,7 @@ namespace Life
             {
                 centreCount = value;
             }
-        }
+        }                                                       
         
         public List <int> SurvivalRate
         {
@@ -253,7 +264,7 @@ namespace Life
             get => memory;
             set
             {
-                if (value > MIN_MEMORY && value <= MAX_MEMORY)
+                if (value >= MIN_MEMORY && value <= MAX_MEMORY)
                 {
                     memory = value;
                 }

@@ -2,7 +2,7 @@
   "profiles": {
     "Life": {
       "commandName": "Project",
-      "commandLineArgs": "dotnet life.dll --neighbour moore 1 false"
+      "commandLineArgs": "dotnet life.dll --seed Seeds\\worker_bee_15x20.seed --dimensions 15 20 --step --neighbour moore 1 true"
     }
   }
 }
