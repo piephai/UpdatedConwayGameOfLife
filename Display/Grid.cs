@@ -101,7 +101,7 @@ namespace Display
             Console.SetWindowSize(bufferWidth + 1, bufferHeight + 1);
             Console.SetBufferSize(bufferWidth + 1, bufferHeight + 1);
             #else
-            system($@"printf '\e[8;{bufferHeight + 1};{bufferWidth + 1}t'");
+                system($@"printf '\e[8;{bufferHeight + 1};{bufferWidth + 1}t'");
             #endif
 
             Console.Clear();

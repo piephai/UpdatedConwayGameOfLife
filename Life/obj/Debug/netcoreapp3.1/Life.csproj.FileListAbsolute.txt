@@ -28,3 +28,4 @@ C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\bin\Debug\
 C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\bin\Debug\netcoreapp3.1\display.pdb
 C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.csproj.CopyComplete
 C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.genruntimeconfig.cache
+C:\Users\n10025421\Documents\CAB201-2020\CAB201Part2\CAB201Part2\Life\obj\Debug\netcoreapp3.1\Life.csprojAssemblyReference.cache

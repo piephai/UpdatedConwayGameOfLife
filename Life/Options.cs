@@ -216,7 +216,7 @@ namespace Life
             get => survivalRate;
             set
             {
-                survivalRate.Clear();
+                
                 survivalRate = value;
             }
         }
@@ -226,8 +226,8 @@ namespace Life
             get => survivalRate;
             set
             {
-                birthRate.Clear();
-                survivalRate = value;
+               
+                birthRate = value;
             }
         }
         public List <string> SurvivalString

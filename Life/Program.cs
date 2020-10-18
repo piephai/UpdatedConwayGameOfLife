@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Display;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Life
 {
@@ -30,7 +31,7 @@ namespace Life
 
                 if (iteration != 0)
                 {
-                    universe = EvolveUniverse(universe, options.Periodic, options.NeighbourOrder, options.NeighbourhoodType, options.CentreCount);
+                    universe = EvolveUniverse(universe, options.Periodic, options.NeighbourOrder, options.NeighbourhoodType, options.CentreCount, options.BirthRate, options.SurvivalRate);
                 }
 
                 UpdateGrid(grid, universe);
@@ -58,11 +59,11 @@ namespace Life
             WaitSpacebar();
         }
 
-        private static int[,] EvolveUniverse(int[,] universe, bool periodic, int order, string neighbourHoodConditions, bool centreCount)
+        private static int[,] EvolveUniverse(int[,] universe, bool periodic, int order, string neighbourHoodConditions, bool centreCount, List<int> birthRate, List<int> survivalRate)
         {
             const int ALIVE = 1;
             const int DEAD = 0;
-            Options options = new Options();
+          
 
             int rows = universe.GetLength(0);
             int columns = universe.GetLength(1);
@@ -75,11 +76,11 @@ namespace Life
                 {
                     int neighbours = CountNeighbours(universe, i, j, periodic, order, neighbourHoodConditions, centreCount);
 
-                    if (universe[i, j] == ALIVE && options.SurvivalRate.Contains(neighbours))
+                    if (universe[i, j] == ALIVE && survivalRate.Contains(neighbours))
                     {
                         buffer[i, j] = ALIVE;
                     }
-                    else if (universe[i, j] == DEAD && options.BirthRate.Contains(neighbours))
+                    else if (universe[i, j] == DEAD && birthRate.Contains(neighbours))
                     {
                         buffer[i, j] = ALIVE;
                     }
@@ -110,14 +111,20 @@ namespace Life
                         {
                             if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
                             {
-                                neighbours += universe[r, c];
+                                if (universe[r, c] == 1)
+                                {
+                                    neighbours += universe[r, c];
+                                }
                             }
                         }
                         else
                         {
                             if (r >= 0 && r < rows && c >= 0 && c < columns)
                             {
-                                neighbours += universe[r, c];
+                                if (universe[r, c] == 1)
+                                {
+                                    neighbours += universe[r, c];
+                                }
                             }
                         }
                     }
