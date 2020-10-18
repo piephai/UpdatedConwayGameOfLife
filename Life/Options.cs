@@ -223,7 +223,7 @@ namespace Life
 
         public List<int> BirthRate
         {
-            get => survivalRate;
+            get => birthRate;
             set
             {
                
@@ -306,7 +306,15 @@ namespace Life
             output += "Generations: ".PadLeft(padding) + $"{Generations}\n";
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
-            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + neighbourOrder + ")" + "\n";
+            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + $"{ neighbourOrder}" + ")";
+            if (centreCount)
+            {
+                output += " (" + "centre-counted" + ")\n";
+            }
+            else
+            {
+                output += "\n";
+            }
             output += "Rules: ".PadLeft(padding) + "S( ";
             for (int i = 0; i < survivalString.Count; i++)
             {

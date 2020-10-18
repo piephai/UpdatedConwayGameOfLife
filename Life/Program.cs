@@ -78,11 +78,17 @@ namespace Life
 
                     if (universe[i, j] == ALIVE && survivalRate.Contains(neighbours))
                     {
+                       
                         buffer[i, j] = ALIVE;
+  
+                       
                     }
                     else if (universe[i, j] == DEAD && birthRate.Contains(neighbours))
                     {
+                        
                         buffer[i, j] = ALIVE;
+                
+                        
                     }
                     else
                     {
@@ -233,6 +239,11 @@ namespace Life
             while (Console.ReadKey(true).Key != ConsoleKey.Spacebar) ;
         }
 
+        private static void StoreToMemory (int generatiosToSave, int [,] universe)
+        {
+
+        }
+
         private static int[,] InitializeUniverse(Options options)
         {
             int[,] universe;
@@ -280,11 +291,6 @@ namespace Life
             using (StreamReader reader = new StreamReader(inputFile))
             {
                 string line = reader.ReadLine();
-                //This is reading the first line so you want to make it so that it knows which one is version 1.0 etc.
-                // x is dead o is alive in version 2.0 while version 1.0 doesn't need that
-
-                //string firstLine = File.ReadLines(inputFile).First();
-
                 if (line == "#version=1.0")
                 {
                     while (!reader.EndOfStream)
@@ -298,7 +304,7 @@ namespace Life
 
                         universe[row, column] = 1;
                     }
-                    return universe;
+                   
                 }
 
                 else if (line == "#version=2.0")
@@ -309,24 +315,68 @@ namespace Life
 
                         string[] elements = line.Split(" ");
 
-                        if(line.Contains("(o)"))
+                        if (!(line.Contains("rectangle") || line.Contains("ellipse")))
                         {
-                            int row = int.Parse(elements[0]);
-                            int column = int.Parse(elements[1]);
-                            universe[row, column] = 1;
+                            if (line.Contains("(o)"))
+                            {
+                                elements[2] = elements[2].Replace(",", "");
+                                int row = int.Parse(elements[2]);
+                                int column = int.Parse(elements[3]);
+                                universe[row, column] = 1;
+                            }
+                            else if (line.Contains("(x)"))
+                            {
+                                elements[2] = elements[2].Replace(",", "");
+                                int row = int.Parse(elements[2]);
+                                int column = int.Parse(elements[3]);
+                                universe[row, column] = 0;
+                            }
                         }
-                        else if (line.Contains("(x)"))
+                        else
                         {
-                            int row = int.Parse(elements[0]);
-                            int column = int.Parse(elements[1]);
-                            universe[row, column] = 0;
+                            if (line.Contains("(o)"))
+                            {
+                                ProcessVersion2ShapeCells(elements, universe, true);
+                            }
+                            else if (line.Contains("(x)"))
+                            {
+                                ProcessVersion2ShapeCells(elements, universe, false);
+                            }
                         }
-                        return universe;
+                        
                     }
                 }
             }
 
             return universe;
+        }
+
+        private static void ProcessVersion2ShapeCells (string[] elements, int [,] universe, bool isAlive)
+        {
+            elements[2] = elements[2].Replace(",", "");
+            for (int i = 0; i < elements.Length; i++)
+            {
+                elements[i] = elements[i].Replace(",", "");
+            }
+            int rowBottomLeft = int.Parse(elements[3]);
+            int colBottomLeft = int.Parse(elements[4]);
+            int rowTopRight = int.Parse(elements[5]);
+            int colTopRight = int.Parse(elements[6]);
+
+            for (int row = rowBottomLeft; row <= rowTopRight; row++)
+            {
+                for (int col = colBottomLeft; col <= colTopRight; col++)
+                {
+                    if (isAlive)
+                    {
+                        universe[row, col] = 1;
+                    }
+                    else
+                    {
+                        universe[row, col] = 0;
+                    }
+                }
+            }
         }
     }
 }

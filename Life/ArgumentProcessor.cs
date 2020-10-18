@@ -57,6 +57,10 @@ namespace Life
                         case "--ghost":
                             ProcessGhostMode(args, i, options);
                             break;
+                        case "--seed":
+                            ProcessInputFile(args, i, options);
+                            break;
+                        
 
                     }
                 }

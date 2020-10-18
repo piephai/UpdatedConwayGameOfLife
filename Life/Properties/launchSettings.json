@@ -2,7 +2,7 @@
   "profiles": {
     "Life": {
       "commandName": "Project",
-      "commandLineArgs": "dotnet Life.dll --birth 3 5...8 --survival 5...8 --periodic --dimensions 32 32"
+      "commandLineArgs": "dotnet life.dll --neighbour moore 1 false"
     }
   }
 }
