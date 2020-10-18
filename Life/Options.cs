@@ -36,9 +36,8 @@ namespace Life
         private bool containElipse = false;
         private List<string> survivalString = new List<string> { "2", "3" };
         private List<string> birthRateString = new List<string> { "3" };
-        //private int endingSurvivalNum = 3;
-        //private int startingBirthNum = 3;
-        //private int endingBirthNum = 3;
+        private bool isAllDead = false;
+
 
         public int Rows 
         {
@@ -65,6 +64,15 @@ namespace Life
                         $"range of values ({MIN_DIMENSION} - {MAX_DIMENSION})");
                 }
                 columns = value;
+            }
+        }
+
+        public bool IsAllDead
+        {
+            get => isAllDead;
+            set
+            {
+                isAllDead = value;
             }
         }
 
@@ -280,17 +288,19 @@ namespace Life
             get => outputFile;
             set
             {
-                if (!File.Exists(value))
+                if (File.Exists(value))
                 {
-                    throw new ArgumentException($"File \'{value}\' does not exist.");
+                    throw new ArgumentException($"File \'{value}\' exists already");
                 }
                 if (!Path.GetExtension(value).Equals(".seed"))
                 {
                     throw new ArgumentException($"Incompatible file extension \'{Path.GetExtension(value)}\'");
                 }
+
                 outputFile = value;
             }
         }
+
 
         public bool GhostMode
         {

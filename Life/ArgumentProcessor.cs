@@ -257,10 +257,18 @@ namespace Life
                     string[] numbers = Regex.Split(argument, @"\D+"); //Split the string up into individual digits
                     foreach (string value in numbers)
                     {//Loop through the numbers array after the regex split to turn each string element into an integer value
-                        int intValue = int.Parse(value);
+                        if (!int.TryParse(value, out int intValue))
+                        {
+                            throw new ArgumentException($"The supplied " + optionName + " parameter is not a valid integer.");
+                        }
+                        if (!(intValue >= 0))
+                        {
+                            throw new ArgumentException($"The supplied " + optionName + " parameter is not a valid integer. Value need to be greater than or equal to 0 ");
+                        }
+                      
                         tempList.Add(intValue);
                     }
-                    ElipseLoop(tempList, inputList);
+                    ElipseLoop(tempList, inputList, optionName);
                 }
                 stringList.Add(argument); //Add each of --survival parameter as a string to a list
             }
@@ -350,15 +358,27 @@ namespace Life
 
         }
 
-        private static void ElipseLoop(List<int> initialList, List<int> outputList)
+        private static void ElipseLoop(List<int> initialList, List<int> outputList, string survivalOrBirth)
         {
 
             int startElement = initialList[0];
             int endElement = initialList[1];
+            int tempNum;
+            if (startElement > endElement) //For (s)...(e) if s is greater than e then swap them around and add all the numbers in the range (inclusive) as normal
+            {
+                tempNum = startElement;
+                startElement = endElement;
+                endElement = tempNum;
+            }
+            if (startElement == endElement)
+            {
+                throw new ArgumentException($"({startElement}...{endElement}) is not valid input for {survivalOrBirth} value. \nThe two numbers before and after ... cannot have the same value");
+            }
+
             for (int currentElement = startElement; currentElement <= endElement; currentElement++)
             {
                 outputList.Add(currentElement);
-            }
+            }      
 
         }
 
