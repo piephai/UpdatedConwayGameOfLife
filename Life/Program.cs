@@ -375,6 +375,7 @@ namespace Life
         {
             int[,] universe = new int[rows, columns];
 
+            //Encapsulation
             Random random = new Random();
             for (int i = 0; i < universe.GetLength(0); i++)
             {
@@ -410,7 +411,7 @@ namespace Life
                    
                 }
 
-                else if (line == "#version=2.0" //Read version 2.0 file
+                else if (line == "#version=2.0") //Read version 2.0 file
                 {
                     while (!reader.EndOfStream)
                     {
@@ -458,60 +459,64 @@ namespace Life
         private static void ProcessVersion2ShapeCells(string[] elements, int[,] universe, bool isAlive)
         {
             //elements[2] = elements[2].Replace(",", "");  
-            for (int i = 0; i < elements.Length; i++)
-            {  //Replace all the commas (Read only so the file will not be changed)
-                elements[i] = elements[i].Replace(",", "");
-            }
+            //for (int i = 0; i < elements.Length; i++)
+            //{  //Replace all the commas (Read only so the file will not be changed)
+            //    elements[i] = elements[i].Replace(",", "");
+            //}
 
 
-            int rowBottomLeft = int.Parse(elements[3]);
-            int colBottomLeft = int.Parse(elements[4]);
-            int rowTopRight = int.Parse(elements[5]);
-            int colTopRight = int.Parse(elements[6]);
+            //int rowBottomLeft = int.Parse(elements[3]);
+            //int colBottomLeft = int.Parse(elements[4]);
+            //int rowTopRight = int.Parse(elements[5]);
+            //int colTopRight = int.Parse(elements[6]);
 
             //For rectangle cell structure
             if (elements.Contains("rectangle"))
             {
-                for (int row = rowBottomLeft; row <= rowTopRight; row++)
-                {
-                    for (int col = colBottomLeft; col <= colTopRight; col++)
-                    {
-                        if (isAlive)
-                        {
-                            universe[row, col] = 1;
-                        }
-                        else
-                        {
-                            universe[row, col] = 0;
-                        }
-                    }
-                }
+                Rectangle r = new Rectangle(universe, elements, isAlive);
+                r.RemoveCommaFromElements(elements);
+                r.GetUniverse(universe, elements, isAlive);
+ 
+                //for (int row = rowBottomLeft; row <= rowTopRight; row++)
+                //{
+                //    for (int col = colBottomLeft; col <= colTopRight; col++)
+                //    {
+                //        if (isAlive)
+                //        {
+                //            universe[row, col] = 1;
+                //        }
+                //        else
+                //        {
+                //            universe[row, col] = 0;
+                //        }
+                //    }
+                //}
             }
             else
             {
                 //Get centre of ellipse
-                int centreX = (colBottomLeft + colTopRight) / 2;
-                int centreY = (rowBottomLeft + rowTopRight) / 2;
+                //int centreX = (colBottomLeft + colTopRight) / 2;
+                //int centreY = (rowBottomLeft + rowTopRight) / 2;
 
-                for (int row = rowBottomLeft; row <= rowTopRight; row++)
-                {
-                    for (int col = colBottomLeft; col <= colTopRight; col++)
-                    {
-                        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) <= 1) //Check if [row, column] is inside ellipse. Formula from blackboard
-                        {
-                            if (isAlive)
-                            {
-                                universe[row, col] = 1;
-                            }
-                            else
-                            {
-                                universe[row, col] = 0;
-                            }
-                        }
+                //for (int row = rowBottomLeft; row <= rowTopRight; row++)
+                //{
+                //    for (int col = colBottomLeft; col <= colTopRight; col++)
+                //    {
+                //        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) <= 1) //Check if [row, column] is inside ellipse. Formula from blackboard
+                //        {
+                //            if (isAlive)
+                //            {
+                //                universe[row, col] = 1;
+                //            }
+                //            else
+                //            {
+                //                universe[row, col] = 0;
+                //            }
+                //        }
 
                         
-                    }
-                }
+                //    }
+                //}
             }
 
         }
