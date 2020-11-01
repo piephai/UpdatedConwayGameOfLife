@@ -9,7 +9,7 @@ namespace Life
 {
     class Program
     {
-        
+
 
         static void Main(string[] args)
         {
@@ -26,21 +26,21 @@ namespace Life
             WaitSpacebar();
 
             grid.InitializeWindow();
-           
+
 
             Stopwatch stopwatch = new Stopwatch();
 
             int iteration = 0;
             while (iteration <= options.Generations)
             {
-                
+
                 stopwatch.Restart();
 
                 if (iteration != 0)
                 {
                     universe = EvolveUniverse(universe, options.Periodic, options.NeighbourOrder, options.NeighbourhoodType, options.CentreCount, options.BirthRate, options.SurvivalRate);
                 }
-                
+
                 if (universeList.Count == options.GenerationalMemory) //Remove the first item in the list if the list capacity is reached (Capacity is the generationalMemory)
                 {
                     universeList.RemoveAt(0);
@@ -53,7 +53,7 @@ namespace Life
                 grid.Render();
                 isSteadyState = CheckSteadyState(universeList, options, universe); //Check if the current universe have reached a steady state
                 if (isSteadyState)
-                { 
+                {
                     break; //If a steady state is found then stop the next generation from happening
                 }
                 universeList.Add(universe);
@@ -83,7 +83,7 @@ namespace Life
 
             grid.RevertWindow();
 
-            
+
             if (isSteadyState && options.IsAllDead == false)
             {
                 Logging.Message($"Steady-state detected... periodicity = {iteration - 1}");
@@ -99,14 +99,14 @@ namespace Life
             Logging.Message("Press spacebar to exit program...");
             WaitSpacebar();
         }
-        private static bool CheckSteadyState (List<int[,]> universeList, Options options, int[,] universe)
+        private static bool CheckSteadyState(List<int[,]> universeList, Options options, int[,] universe)
         {
             if (universeList.Count > 0) //Only check if universeList already have at least an element in it
             {
                 for (int i = 0; i < universeList.Count; i++)
                 {
                     int steadyStateCounter = 0;
-                    int isDeadState = 0; 
+                    int isDeadState = 0;
                     for (int row = 0; row < options.Rows; row++)
                     {
                         for (int column = 0; column < options.Columns; column++)
@@ -118,7 +118,7 @@ namespace Life
                                     isDeadState++;
                                 }
                                 steadyStateCounter++;
-                            }                      
+                            }
                         }
                     }
                     if (steadyStateCounter == options.Rows * options.Columns) //If a grid from universeList matches perfectly with the current universe then steadyStateCounter will be equal to rows * columns
@@ -129,17 +129,17 @@ namespace Life
                             return true;
                         }
                         return true;
-                        
+
                     }
-                    
+
                 }
             }
             return false;
-            
+
         }
 
 
-        private static void OutputToFile (Options options, List<int[,]> universeList, StreamWriter writer)
+        private static void OutputToFile(Options options, List<int[,]> universeList, StreamWriter writer)
         {
             for (int row = 0; row < options.Rows; row++)
             {
@@ -157,17 +157,17 @@ namespace Life
                         writer.WriteLine("(x) cell: " + row + ", " + column);
                     }
                 }
-            } 
+            }
 
-            
+
         }
 
- 
+
         private static int[,] EvolveUniverse(int[,] universe, bool periodic, int order, string neighbourHoodConditions, bool centreCount, List<int> birthRate, List<int> survivalRate)
         {
             const int ALIVE = 1;
             const int DEAD = 0;
-          
+
 
             int rows = universe.GetLength(0);
             int columns = universe.GetLength(1);
@@ -182,17 +182,17 @@ namespace Life
 
                     if (universe[i, j] == ALIVE && survivalRate.Contains(neighbours)) //Check if survival list contain the condition for a cell to stay alive (if it contains the number of allowed alive neighbouring cells)
                     {
-                       
+
                         buffer[i, j] = ALIVE;
-  
-                       
+
+
                     }
                     else if (universe[i, j] == DEAD && birthRate.Contains(neighbours)) //Check if birthrate list contain the condition for a cell to become alive (if it contains the number of specified alive neighbouring cells
                     {
-                        
+
                         buffer[i, j] = ALIVE;
-                
-                        
+
+
                     }
                     else
                     {
@@ -209,7 +209,7 @@ namespace Life
             int columns = universe.GetLength(1);
 
             int neighbours = 0;
-            
+
             //Non-periodic moore neighbourhood
             if (!periodic && String.Equals(neighbourHoodConditions, "moore", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -277,8 +277,8 @@ namespace Life
             //            {
             //                if ((r != i || c != j) && r >= 0 && r < rows && c >= 0 && c < columns)
             //                {
-                              
-                                
+
+
             //                    if (r % 1 == -1 || r % 1 == 1 && c % 1 != -1 || c % 1 != 1)
             //                    {
             //                        neighbours += universe[r, c];
@@ -319,7 +319,7 @@ namespace Life
             //        }
             //    }
             //}
-            
+
 
             return neighbours;
         }
@@ -327,7 +327,7 @@ namespace Life
         // "Borrowed" from: https://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
         private static int Modulus(int x, int m)
         {
-           return (x % m + m) % m;
+            return (x % m + m) % m;
         }
 
         private static void UpdateGrid(Grid grid, int[,] universe)
@@ -361,7 +361,7 @@ namespace Life
                 {
                     universe = InitializeFromFile(options.Rows, options.Columns, options.InputFile);
                 }
-                catch 
+                catch
                 {
                     Logging.Warning($"Error initializing universe using \'{options.InputFile}\'. Reverting to randomised universe...");
                     universe = InitializeFromRandom(options.Rows, options.Columns, options.RandomFactor);
@@ -387,7 +387,7 @@ namespace Life
 
             return universe;
         }
-        
+
         private static int[,] InitializeFromFile(int rows, int columns, string inputFile)
         {
             int[,] universe = new int[rows, columns];
@@ -408,14 +408,10 @@ namespace Life
 
                         universe[row, column] = 1;
                     }
-                   
+
                 }
 
-<<<<<<< Updated upstream
                 else if (line == "#version=2.0") //Read version 2.0 file
-=======
-                else if (line == "#version=2.0")// Read version 2.0 file
->>>>>>> Stashed changes
                 {
                     while (!reader.EndOfStream)
                     {
@@ -442,16 +438,16 @@ namespace Life
                         }
                         else
                         {
-                            if (line.Contains("(o)")) 
+                            if (line.Contains("(o)"))
                             {
                                 ProcessVersion2ShapeCells(elements, universe, true);
                             }
-                            else if (line.Contains("(x)")) 
+                            else if (line.Contains("(x)"))
                             {
                                 ProcessVersion2ShapeCells(elements, universe, false);
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -462,96 +458,25 @@ namespace Life
         //Process .seed file which are version 2.0 and has a shape (rectangle or ellipse)
         private static void ProcessVersion2ShapeCells(string[] elements, int[,] universe, bool isAlive)
         {
-            //elements[2] = elements[2].Replace(",", "");  
-            //for (int i = 0; i < elements.Length; i++)
-            //{  //Replace all the commas (Read only so the file will not be changed)
-            //    elements[i] = elements[i].Replace(",", "");
-            //}
 
-
-            //int rowBottomLeft = int.Parse(elements[3]);
-            //int colBottomLeft = int.Parse(elements[4]);
-            //int rowTopRight = int.Parse(elements[5]);
-            //int colTopRight = int.Parse(elements[6]);
 
             //For rectangle cell structure
             if (elements.Contains("rectangle"))
             {
                 Rectangle r = new Rectangle(universe, elements, isAlive);
-                r.RemoveCommaFromElements(elements);
+                r.RemoveCommaFromElements(elements); //Inherited from shape into rectangle class
                 r.GetUniverse(universe, elements, isAlive);
- 
-                //for (int row = rowBottomLeft; row <= rowTopRight; row++)
-                //{
-                //    for (int col = colBottomLeft; col <= colTopRight; col++)
-                //    {
-                //        if (isAlive)
-                //        {
-                //            universe[row, col] = 1;
-                //        }
-                //        else
-                //        {
-                //            universe[row, col] = 0;
-                //        }
-                //    }
-                //}
+
             }
             else
             {
-                //Get centre of ellipse
-<<<<<<< Updated upstream
-                //int centreX = (colBottomLeft + colTopRight) / 2;
-                //int centreY = (rowBottomLeft + rowTopRight) / 2;
 
-                //for (int row = rowBottomLeft; row <= rowTopRight; row++)
-                //{
-                //    for (int col = colBottomLeft; col <= colTopRight; col++)
-                //    {
-                //        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) <= 1) //Check if [row, column] is inside ellipse. Formula from blackboard
-                //        {
-                //            if (isAlive)
-                //            {
-                //                universe[row, col] = 1;
-                //            }
-                //            else
-                //            {
-                //                universe[row, col] = 0;
-                //            }
-                //        }
+                Ellipse e = new Ellipse(universe, elements, isAlive);
+                e.RemoveCommaFromElements(elements);
+                e.GetUniverse(universe, elements, isAlive);
 
-                        
-                //    }
-                //}
-=======
-                int centreX = (colBottomLeft + colTopRight) / 2;
-                int centreY = (rowBottomLeft + rowTopRight) / 2;
-
-                for (int row = rowBottomLeft; row <= rowTopRight; row++)
-                {
-                    for (int col = colBottomLeft; col <= colTopRight; col++)
-                    {
-
-                        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) > 1) //Check if [row, column] is inside ellipse. Formula from blackboard
-                        {
-                            throw new ArgumentException($"Cell is not inside ellipse");
-                        }
-
-                        if (isAlive)
-                        {
-                            universe[row, col] = 1;
-                        }
-                        else
-                        {
-                            universe[row, col] = 0;
-                        }
-
-
-                    }
-                }
->>>>>>> Stashed changes
             }
 
         }
-                   
     }
 }

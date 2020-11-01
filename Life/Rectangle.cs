@@ -8,6 +8,8 @@ public class Rectangle: Shape
 
 	public override int [,] GetUniverse(int[,] universe, string[] elements, bool isAlive)
     {
+        
+        //Uses polymorphism to GetUniverse for rectangle cell type
         int rowBottomLeft = int.Parse(elements[3]);
         int colBottomLeft = int.Parse(elements[4]);
         int rowTopRight = int.Parse(elements[5]);
@@ -34,12 +36,4 @@ public class Rectangle: Shape
         return universe;
     }
 
-	public override void RemoveCommaFromElements (string [] elements)
-    {
-        for (int i = 0; i < elements.Length; i++)
-        {  //Replace all the commas (Read only so the file will not be changed)
-            elements[i] = elements[i].Replace(",", "");
-        }
-       
-    }
 }

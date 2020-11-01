@@ -2,7 +2,7 @@
   "profiles": {
     "Life": {
       "commandName": "Project",
-      "commandLineArgs": "dotnet life.dll --max-update 15 --dimensions 48 48 --generations 300 --periodic --birth 34...45 --survival 34...58 --neighbour Moore 5 true --seed Seeds\\bugs_48x48.seed"
+      "commandLineArgs": "dotnet life.dll --max-update 15 --dimensions 48 48 --generations 300 --periodic --birth 34...45 --survival 34...58 --neighbour Moore 5 true --seed Seeds/bugs_48x48.seed --step   "
     }
   }
 }

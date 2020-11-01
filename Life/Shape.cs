@@ -20,9 +20,13 @@ public class Shape
 
 		return universe;
     }
-	public virtual void RemoveCommaFromElements (string [] elements)
+	public void RemoveCommaFromElements (string [] elements)
     {
-		
-    }
+		for (int i = 0; i < elements.Length; i++)
+		{  //Replace all the commas (Read only so the file will not be changed)
+			elements[i] = elements[i].Replace(",", "");
+		}
+
+	}
 
 }

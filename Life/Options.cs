@@ -27,14 +27,14 @@ namespace Life
         private string outputFile = null;
         private string inputFile = null;
         private int neighbourOrder = 1;
-        private string neighbourhoodType = "moore";
+        private string neighbourhoodType = "Moore";
         private bool centreCount = false;
         private int memory = 16;
         private bool ghostMode = false;
         private List <int> survivalRate = new List<int> {2, 3 };
         private List<int> birthRate = new List<int> { 3 };
         private bool containElipse = false;
-        private List<string> survivalString = new List<string> { "2", "3" };
+        private List<string> survivalString = new List<string> { "2...3" };
         private List<string> birthRateString = new List<string> { "3" };
         private bool isAllDead = false;
 
@@ -366,16 +366,6 @@ namespace Life
             output += "Generations: ".PadLeft(padding) + $"{Generations}\n";
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
-            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + $"{ neighbourOrder}" + ")";
-            // Checking whether centre count is counted or not counted
-            if (centreCount)
-            {
-                output += " (" + "centre-counted" + ")\n";
-            }
-            else
-            {
-                output += "\n";
-            }
             output += "Rules: ".PadLeft(padding) + "S( ";
             for (int i = 0; i < survivalString.Count; i++)
             {
@@ -387,7 +377,17 @@ namespace Life
                 output += birthRateString[i] + " ";
             }
             output += ")\n";
-            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + "(" + neighbourOrder + ")" + "\n";
+            output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + $"{ neighbourOrder}" + ")";
+            // Checking whether centre count is counted or not counted
+            if (centreCount)
+            {
+                output += " (" + "centre-counted" + ")\n";
+            }
+            else
+            {
+                output += "\n";
+            }
+
             output += "Periodic: ".PadLeft(padding) + (Periodic ? "Yes" : "No") + "\n";
             output += "Rows: ".PadLeft(padding) + Rows + "\n";
             output += "Columns: ".PadLeft(padding) + Columns + "\n";
