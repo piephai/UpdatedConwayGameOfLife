@@ -38,12 +38,14 @@ namespace Life
         private List<string> birthRateString = new List<string> { "3" };
         private bool isAllDead = false;
 
-
+        // Public get set accessor for the private rows value
         public int Rows 
         {
             get => rows;
             set 
-            {
+            {   
+                /* If the value is smaller than the minimum dimension or larger than the max dimension it will throw
+                 * an exception */
                 if (value < MIN_DIMENSION || value > MAX_DIMENSION)
                 {
                     throw new ArgumentException($"Row dimension \'{value}\' is outside of the acceptable " +
@@ -53,11 +55,14 @@ namespace Life
             } 
         }
 
+        // Public get set accessor for the private columns value
         public int Columns
         {
             get => columns;
             set
             {
+                /* If the value is smaller than the minimum dimension or larger than the max dimension it will throw
+                 * an exception */
                 if (value < MIN_DIMENSION || value > MAX_DIMENSION)
                 {
                     throw new ArgumentException($"Column dimension \'{value}\' is outside of the acceptable " +
@@ -67,6 +72,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor to check for a true or false depending on whether all the cells are dead
         public bool IsAllDead
         {
             get => isAllDead;
@@ -76,11 +82,13 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private generations value
         public int Generations
         {
             get => generations;
             set
             {
+                // If the value is smaller than the minimum generation it will throw an exception
                 if (value < MIN_GENERATION)
                 {
                     throw new ArgumentException($"Generation count \'{value}\' is outside of the acceptable " +
@@ -90,11 +98,14 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private update rate value
         public double UpdateRate
         {
             get => updateRate;
             set
             {
+                /* If the value is smaller than the minimum update rate or larger than the max update rate it will
+                 * throw an exception */
                 if (value < MIN_UPDATE || value > MAX_UPDATE)
                 {
                     throw new ArgumentException($"Update rate \'{value:F2}\' is outside of the acceptable " +
@@ -104,6 +115,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor to check for a true or false value depending on whether it is an Ellipse
         public bool Elipse
         {
             get => containElipse;
@@ -113,11 +125,13 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private random factor value
         public double RandomFactor
         {
             get => randomFactor;
             set
-            {
+            {   /* If the value is smaller than the minimum random factor or larger than the max random factor it will
+                 * throw an exception*/
                 if (value < MIN_RANDOM || value > MAX_RANDOM)
                 {
                     throw new ArgumentException($"Random factor \'{value:F2}\' is outside of the acceptable " +
@@ -127,15 +141,18 @@ namespace Life
             }
         }
 
+        // Public get set accessor to check and assign the input file
         public string InputFile
         {
             get =>  inputFile;
             set
-            {
+            {   
+                // If the input file does not exist it will throw an exception
                 if (!File.Exists(value))
                 {
                     throw new ArgumentException($"File \'{value}\' does not exist.");
                 }
+                // If the input file does not contain the .seed extension then it will throw an exception
                 if (!Path.GetExtension(value).Equals(".seed"))
                 {
                     throw new ArgumentException($"Incompatible file extension \'{Path.GetExtension(value)}\'");
@@ -144,6 +161,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private neighbour order value
         public int NeighbourOrder
         {
             get => neighbourOrder;
@@ -154,7 +172,7 @@ namespace Life
                 {
                     int lessThanSmallestDimension = value / 2;
 
-                    // Checking order is less than half of the smallest dimension
+                    // If rows is smaller columns it will check the order is less than half of the rows dimension
                     if (rows < columns)
                     {
                         if (lessThanSmallestDimension < rows)
@@ -166,6 +184,7 @@ namespace Life
                             throw new ArgumentException($"Neighbour order must be less than half of the rows dimension ({rows})");
                         }
                     }
+                    // If columns is smaller rows it will check the order is less than half of the columns dimension
                     else if (columns < rows)
                     {
                         if (lessThanSmallestDimension < columns)
@@ -178,7 +197,8 @@ namespace Life
                         }
                     }
                     else
-                    {
+                    {   
+                        // If the rows and columns are both bigger than the halved value 
                         if(lessThanSmallestDimension < rows && lessThanSmallestDimension < columns)
                         {
                             neighbourOrder = value;
@@ -189,6 +209,7 @@ namespace Life
                         }
                     }
                 }
+                // If the value is outside of the specifications it will throw an exception
                 else
                 {
                     throw new ArgumentException($"Neighbour order \'{value:F2}\' is outside of the acceptable " +
@@ -197,6 +218,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private neighbourhood type value
         public string NeighbourhoodType
         {
             get => neighbourhoodType;
@@ -205,14 +227,17 @@ namespace Life
                 string mooreString = "moore";
                 string vonString = "vonNeumann";
 
+                // Checking if the value is equal to "moore" case insensitive 
                 if (String.Equals(value, mooreString, StringComparison.CurrentCultureIgnoreCase))
                 {
                     neighbourhoodType = value;
                 }
+                // Checking if the value is equal to "conNeumann" case insensitive
                 else if (String.Equals(value, vonString, StringComparison.CurrentCultureIgnoreCase))
                 {
                     neighbourhoodType = value;
                 }
+                // If it is equal to neither it will throw an exception
                 else
                 {
                     throw new ArgumentException($"The input: \'{value}\' is not a valid parameter. " +
@@ -221,6 +246,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private Centre Count value
         public bool CentreCount
         {
             get => centreCount;
@@ -228,8 +254,9 @@ namespace Life
             {
                 centreCount = value;
             }
-        }                                                       
-        
+        }
+
+        // Public get set accessor for the private survival rate value
         public List <int> SurvivalRate
         {
             get => survivalRate;
@@ -240,6 +267,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private birth rate value
         public List<int> BirthRate
         {
             get => birthRate;
@@ -249,6 +277,8 @@ namespace Life
                 birthRate = value;
             }
         }
+
+        // Public get set accessor for the private survival string value
         public List <string> SurvivalString
         {
             get => survivalString;
@@ -258,6 +288,7 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private birth rate string value
         public List<string> BirthrateString
         {
             get => birthRateString;
@@ -267,11 +298,13 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the private generational memory value
         public int GenerationalMemory
         {
             get => memory;
             set
-            {
+            {   /* If the value is smaller than the minimum memory or larger than the max memory it will
+                 * throw an exception*/
                 if (value >= MIN_MEMORY && value <= MAX_MEMORY)
                 {
                     memory = value;
@@ -283,25 +316,27 @@ namespace Life
             }
         }
 
+        // Public get set accessor for the output file
         public string OutputFile // change?
         {
             get => outputFile;
             set
             {
+                // Checking if the output file exists because then it cannot be created
                 if (File.Exists(value))
                 {
                     throw new ArgumentException($"File \'{value}\' exists already");
                 }
+                // Checking if the file does not contain the .seed extension
                 if (!Path.GetExtension(value).Equals(".seed"))
                 {
                     throw new ArgumentException($"Incompatible file extension \'{Path.GetExtension(value)}\'");
                 }
-
                 outputFile = value;
             }
         }
 
-
+        // Public get set accessor to check for a true or false value for ghost mode
         public bool GhostMode
         {
             get => ghostMode;
@@ -310,13 +345,17 @@ namespace Life
                 ghostMode = value;
             }
         }
-        
 
-
+        // Public get set accessor to check for a true or false value for periodic mode
         public bool Periodic { get; set; } = false;
 
+        // Public get set accessor to check for a true or false value for step mode
         public bool StepMode { get; set; } = false;
 
+        /// <summary>
+        /// This method creates an output string and adds the information of each options to the string.
+        /// </summary>
+        /// <returns> This returns an string of all the options and their relevant settings or values </returns>
         public override string ToString()
         {
             const int padding = 30;
@@ -328,6 +367,7 @@ namespace Life
             output += "Update Rate: ".PadLeft(padding) + $"{UpdateRate} updates/s\n";
             output += "Memory: ".PadLeft(padding) + $"{memory}\n";
             output += "Neighbourhood: ".PadLeft(padding) + $"{neighbourhoodType}" + " (" + $"{ neighbourOrder}" + ")";
+            // Checking whether centre count is counted or not counted
             if (centreCount)
             {
                 output += " (" + "centre-counted" + ")\n";
