@@ -60,8 +60,6 @@ namespace Life
                         case "--seed":
                             ProcessInputFile(args, i, options);
                             break;
-                        
-
                     }
                 }
                 Logging.Success("Command line arguments processed without issue!");

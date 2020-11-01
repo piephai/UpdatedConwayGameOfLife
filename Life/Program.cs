@@ -395,7 +395,7 @@ namespace Life
             using (StreamReader reader = new StreamReader(inputFile))
             {
                 string line = reader.ReadLine();
-                if (line == "#version=1.0") //Read version 1.0 file
+                if (line == "#version=1.0") // Read version 1.0 file
                 {
                     while (!reader.EndOfStream)
                     {
@@ -411,7 +411,11 @@ namespace Life
                    
                 }
 
+<<<<<<< Updated upstream
                 else if (line == "#version=2.0") //Read version 2.0 file
+=======
+                else if (line == "#version=2.0")// Read version 2.0 file
+>>>>>>> Stashed changes
                 {
                     while (!reader.EndOfStream)
                     {
@@ -421,14 +425,14 @@ namespace Life
 
                         if (!(line.Contains("rectangle") || line.Contains("ellipse")))
                         {
-                            if (line.Contains("(o)")) //Check if the line of text is specifying the cell to be alive (o)
+                            if (line.Contains("(o)")) // Check if the line of text is specifying the cell to be alive (o)
                             {
-                                elements[2] = elements[2].Replace(",", ""); //Replace all the commas (Read only so the file will not be changed)
+                                elements[2] = elements[2].Replace(",", ""); // Replace all the commas (Read only so the file will not be changed)
                                 int row = int.Parse(elements[2]);
                                 int column = int.Parse(elements[3]);
                                 universe[row, column] = 1;
                             }
-                            else if (line.Contains("(x)")) //Check if the line of text is specifying the cell to be dead (x)
+                            else if (line.Contains("(x)")) // Check if the line of text is specifying the cell to be dead (x)
                             {
                                 elements[2] = elements[2].Replace(",", "");
                                 int row = int.Parse(elements[2]);
@@ -495,6 +499,7 @@ namespace Life
             else
             {
                 //Get centre of ellipse
+<<<<<<< Updated upstream
                 //int centreX = (colBottomLeft + colTopRight) / 2;
                 //int centreY = (rowBottomLeft + rowTopRight) / 2;
 
@@ -517,6 +522,33 @@ namespace Life
                         
                 //    }
                 //}
+=======
+                int centreX = (colBottomLeft + colTopRight) / 2;
+                int centreY = (rowBottomLeft + rowTopRight) / 2;
+
+                for (int row = rowBottomLeft; row <= rowTopRight; row++)
+                {
+                    for (int col = colBottomLeft; col <= colTopRight; col++)
+                    {
+
+                        if ((((4*(row - centreY)^2)/rowTopRight) + ((4*(col - centreX)^2)/colTopRight)) > 1) //Check if [row, column] is inside ellipse. Formula from blackboard
+                        {
+                            throw new ArgumentException($"Cell is not inside ellipse");
+                        }
+
+                        if (isAlive)
+                        {
+                            universe[row, col] = 1;
+                        }
+                        else
+                        {
+                            universe[row, col] = 0;
+                        }
+
+
+                    }
+                }
+>>>>>>> Stashed changes
             }
 
         }
